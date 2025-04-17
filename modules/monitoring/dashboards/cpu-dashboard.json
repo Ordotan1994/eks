@@ -1,0 +1,19 @@
+{
+    "title": "Cluster CPU",
+    "panels": [
+      {
+        "type": "timeseries",
+        "title": "CPU Usage (cores)",
+        "targets": [
+          {
+            "expr": "sum(rate(container_cpu_usage_seconds_total{job=\"kubelet\",image!=\"\",container!=\"POD\"}[5m]))",
+            "legendFormat": "CPU"
+          }
+        ]
+      }
+    ],
+    "uid": "cluster-cpu",
+    "schemaVersion": 36,
+    "version": 1
+  }
+  
