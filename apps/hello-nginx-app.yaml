@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: hello
   source:
-    repoURL: https://github.com/<your-org>/<your-repo>.git
+    repoURL: https://github.com/Ordotan1994/eks.git
     targetRevision: HEAD
     path: apps/hello-nginx
     kustomize: {}
