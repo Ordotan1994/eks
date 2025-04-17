@@ -70,14 +70,15 @@ module "autoscaler" {
   cluster_name = module.eks.cluster_name
   region       = var.region
   tags         = var.tags
+  oidc_arn     = aws_iam_openid_connect_provider.oidc.arn
+  oidc_url     = aws_iam_openid_connect_provider.oidc.url
 
   providers = {
     kubernetes = kubernetes.eks
     helm       = helm.eks
   }
-
-  depends_on = [module.lb_controller]
-}
+  depends_on = [module.eks]
+  }
 
 module "argocd" {
   source    = "./modules/argocd"

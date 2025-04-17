@@ -38,22 +38,28 @@ data "aws_iam_policy_document" "ca" {
   }
 }
 
+locals {
+  issuer_host = replace(var.oidc_url, "https://", "")
+}
+
 resource "aws_iam_role" "ca" {
   name               = "${var.cluster_name}-cluster-autoscaler-irsa"
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
       Effect = "Allow",
-      Principal = { Federated = aws_iam_openid_connect_provider.oidc.arn },
+      Principal = { Federated = var.oidc_arn },
       Action = "sts:AssumeRoleWithWebIdentity",
       Condition = {
         StringEquals = {
-          for_key = replace(aws_iam_openid_connect_provider.oidc.url, "https://", "") 
-          for_value = "system:serviceaccount:kube-system:cluster-autoscaler"
+          "${local.issuer_host}:sub" = "system:serviceaccount:kube-system:cluster-autoscaler",
+          "${local.issuer_host}:aud" = "sts.amazonaws.com"
         }
       }
     }]
   })
+
   tags = var.tags
 }
 

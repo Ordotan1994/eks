@@ -86,7 +86,7 @@ resource "aws_eks_node_group" "ng" {
   tags = merge(
     var.tags,
     {
-      "k8s.io/cluster-autoscaler/${cluster_name}" = "owned"
+      "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
       "k8s.io/cluster-autoscaler/enabled"        = "TRUE"
     }
   )
